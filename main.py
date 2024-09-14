@@ -1,18 +1,22 @@
-# main.py
+from estudiante import Estudiante
+from curso import Curso
 
-from coche import Coche
+curso_uno = Curso("Mecanica de Fluidos", 1, "Eli Chagolla Inzunza")
+curso_dos = Curso("Mecanismos", 2, "Fernando Saldaña")
+curso_tres = Curso("Electronica", 3, "Anthony Morales Cervantes")
 
-def main():
-    # Crear tres objetos de tipo Coche
-    coche1 = Coche("Toyota", "Corolla", 2015)
-    coche2 = Coche("Honda", "Civic", 2018)
-    coche3 = Coche("Ford", "Focus", 2020)
-    
-    # Mostrar información de cada coche
-    coches = [coche1, coche2, coche3]
-    for coche in coches:
-        coche.mostrar_informacion()
-        print(f"Edad del coche: {coche.calcular_edad_del_coche(2024)} años\n")
+estudiante_uno = Estudiante("Poncho", 18, 1)
+estudiante_dos = Estudiante("Beni", 20, 2)
 
-if __name__ == "__main__":
-    main()
+estudiante_uno.agregar_curso(curso_uno)
+estudiante_uno.agregar_curso(curso_tres)
+
+estudiante_dos.agregar_curso(curso_uno)
+estudiante_dos.agregar_curso(curso_dos)
+
+curso_uno.mostrar_info_curso()
+curso_dos.mostrar_info_curso()
+curso_tres.mostrar_info_curso()
+
+estudiante_uno.mostrar_informacion()
+estudiante_dos.mostrar_informacion()
