@@ -48,16 +48,6 @@ while True:
     elif opcion == "3":
         print("\nSeleccionaste agregar una materia \n")
 
-        nombre = input("Ingrese el nombre de la materia: ")
-        descripcion = input("Ingresa una descripcion breve de la materia: ")
-        semestre = input("Ingresa el semestre en que se toma la materia: ")
-        creditos = input("Ingresa el numero de creditos de la materia: ")
-        materia = Materias("", nombre=nombre, descripcion=descripcion, semestre=semestre, creditos=creditos)
-        id_materia = escuela.generar_id(materia)
-        print(f"EL ID de la materia es: ", id_materia)
-        materia.id = id
-
-    
     elif opcion == "4":
         print("\nSeleccionaste agregar un grupo \n")
     
