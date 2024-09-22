@@ -1,14 +1,13 @@
 class Materias:
-    """
-    id: "MT{ultimos 2 digitos del nombre}{semestre}{cantidad creditos}{rango(1, 1000)}"
-    nombre = str
-    descripcion = str
-    semestre = int
-    credito = int
-    
-    
-    
-    
-    """
+    id: str
+    nombre: str
+    descripcion: str
+    semestre: int
+    creditos: int
 
-    pass
+    def __init__(self, id: str, nombre: str, descripcion: str, semestre: int, creditos: int):
+        self.id = id
+        self.nombre = nombre
+        self.descripcion = descripcion
+        self.semestre = semestre
+        self.creditos = creditos

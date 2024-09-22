@@ -41,3 +41,18 @@ class Escuela:
         numero_controlp = f"M{ano}{dia}{aleatorio}{primeras_letras_nombre}{ultimas_letras_rfc}{longitud_mas_uno}"
 
         return numero_controlp
+    
+        #NUEVOOOOO MATERIAAASSSSS
+    def registrar_materia(self, materia: Materias):
+        self.lista_materias.append(materia)
+
+    def generar_id(self, materia: Materias):
+        ultimas_letras_id = materia.nombre[-2:].upper()
+        semestre = materia.semestre
+        credito = materia.creditos
+        aleatorio = randint(1, 1000)
+
+        id_materia = f"MT{ultimas_letras_id}{semestre}{credito}{aleatorio}"
+        return id_materia
+
+        
