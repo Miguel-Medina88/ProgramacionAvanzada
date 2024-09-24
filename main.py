@@ -64,7 +64,8 @@ while True:
         materia = Materias("", nombre=nombre, descripcion=descripcion, semestre=semestre, creditos=creditos)
         id_materia = escuela.generar_id(materia)
         print(f"EL ID de la materia es: ", id_materia)
-        materia.id = id
+        materia.id = id_materia
+        escuela.registrar_materia(materia=materia)
 
     
     elif opcion == "4":
@@ -80,7 +81,7 @@ while True:
         escuela.listar_maestros()
 
     elif opcion == "8":
-        escuela.lista_estudiantes
+        escuela.listar_materias()
 
     elif opcion == "9":
         escuela.lista_estudiantes
@@ -94,6 +95,11 @@ while True:
         print("\nSeleccionaste la opcion para eliminar un maestro \n")
         numero_controlp = input("\nIngresa el numero de control del maestro: ")
         escuela.eliminar_maestro(numero_controlp=numero_controlp)
+
+    elif opcion == "12":
+        print("\nSeleccionaste la opcion para eliminar una materia \n")
+        id_materia = input("\nIngresa el ID de la materia: ")
+        escuela.eliminar_materia(id_materia=id_materia)
 
 
     else:

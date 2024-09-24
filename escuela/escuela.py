@@ -82,4 +82,15 @@ class Escuela:
         id_materia = f"MT{ultimas_letras_id}{semestre}{credito}{aleatorio}"
         return id_materia
 
+    def listar_materias(self):
+        print("** Materias **")    
+        for materias in self.lista_materias:
+            print(materias.mostrar_info_materia())
+
+    def eliminar_materia(self, id_materia: str):
+        for materia in self.lista_materias:
+            if materia.id == id_materia.strip(): #CAMBIEEEEEEEEEE
+                self.lista_materias.remove(materia)
+                print(f"Materia {materia.nombre}, eliminado exitosamente.\n")
+                return 
     
