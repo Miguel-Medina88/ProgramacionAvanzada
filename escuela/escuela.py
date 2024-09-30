@@ -3,6 +3,8 @@ from estudiantes.estudiante import Estudiante
 from grupos.grupo import Grupo
 from maestros.maestro import Maestro
 from materias.materia import Materias
+from carrera.carrera import Carrera
+from semestre.semestre import Semestre
 from datetime import datetime
 from random import randint
 
@@ -11,6 +13,8 @@ class Escuela:
     lista_maestros: List[Maestro] = []
     lista_grupos: List[Grupo] = []
     lista_materias: List[Materias] = []
+    lista_carreras: List[Carrera] = []
+    lista_semestre: List[Semestre] = []
 
     def registrar_estudiante(self, estudiante: Estudiante):
         self.lista_estudiantes.append(estudiante) #append para agregar una wea
@@ -93,4 +97,43 @@ class Escuela:
                 self.lista_materias.remove(materia)
                 print(f"Materia {materia.nombre}, eliminado exitosamente.\n")
                 return 
+    
+    #carrera
+    def registrar_carrera(self, carrera: Carrera):
+        self.lista_carreras.append(carrera)
+    
+    def listar_carreras(self):
+        print("*************Carreras*************")
+        for carrera in self.lista_carreras:
+            print(carrera.mostrar_info_carrera())
+        #SEMESTRE
+    def registrar_semestre(self, semestre: Semestre):
+        id_carrera = semestre.id_carrera
+        for carrera in self.lista_carreras:
+            if carrera.matricula == id_carrera:
+                carrera.registrar_semestre(semestre=semestre)
+                break
+        self.lista_semestre.append(semestre)
+
+    def listar_semestres(self):
+        print("*************Semestres*************")
+        for semestre in self.lista_semestre:
+            print(semestre.mostrar_info_semestre())
+            
+          #GRUPOOOOOS
+    def registrar_grupo(self, grupo: Grupo):
+        id_semestre = grupo.id_semestre
+
+        for semestre in self.lista_semestre:
+            if id_semestre == semestre.id:
+                semestre.registrar_grupo_en_semestre(grupo=grupo)
+                break
+        self.lista_grupos.append(grupo)
+    
+    def listar_grupos(self):
+        print("** Grupos **")   
+        for grupo in self.lista_grupos:  # Cambiar a singular para mayor claridad
+            print(grupo.mostrar_info_grupo())
+        
+
     

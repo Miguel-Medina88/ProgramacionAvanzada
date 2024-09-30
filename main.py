@@ -2,6 +2,9 @@ from escuela.escuela import Escuela
 from estudiantes.estudiante import Estudiante
 from maestros.maestro import Maestro
 from materias.materia import Materias
+from carrera.carrera import Carrera
+from semestre.semestre import Semestre
+from grupos.grupo import Grupo
 from datetime import datetime
 
 escuela = Escuela()
@@ -20,7 +23,12 @@ while True:
     print("10. Eliminar estudiantes")
     print("11. Eliminar maestros")
     print("12. Eliminar materias")
-    print("13. Salir")
+    print("13. Registrar carrera")
+    print("14. Registrar semestre")
+    print("15. Mostrar carreras")
+    print("16. Mostrar semestres")
+    print("17. Mostrar grupos")
+    print("19. Salir")
     opcion = input("Ingrese una opcion para continuar pa: ")
     
     if opcion == "1":
@@ -70,6 +78,12 @@ while True:
     
     elif opcion == "4":
         print("\nSeleccionaste agregar un grupo \n")
+        tipo = input("Ingresa el tipo de grupo A o B: ")
+        id_semestre = input ("Ingresa el ID del semestre al que pertenece el grupo: ")
+
+        grupo = Grupo(tipo=tipo, id_semestre=id_semestre)
+        escuela.registrar_grupo(grupo=grupo)
+
     
     elif opcion == "5":
         print("\nSeleccionaste agregar un horario \n")
@@ -101,7 +115,34 @@ while True:
         id_materia = input("\nIngresa el ID de la materia: ")
         escuela.eliminar_materia(id_materia=id_materia)
 
+    elif opcion == "13":
+        print("\nSeleccionaste la opcion para registrar una carrera")
 
-    else:
+        nombre = input("Ingresa el nombre de la carrera: ")
+
+        carrera = Carrera(nombre=nombre)
+        escuela.registrar_carrera(carrera=carrera)
+
+    elif opcion == "14":
+        print("\nSeleccionaste la opcion para registrar un semestre")
+
+        numero = input("Ingresa el numero del semestre: ")
+        id_carrera = input("Ingresa el ID de la carrera: ")
+
+        semestre = Semestre(numero=numero, id_carrera=id_carrera)
+        escuela.registrar_semestre(semestre=semestre)
+
+    elif opcion == "15":
+        escuela.listar_carreras()
+
+    elif opcion == "16":
+        escuela.listar_semestres()
+    
+    elif opcion == "17":
+        escuela.listar_grupos()
+
+
+
+    elif opcion == "19":
         print("\nAdios cara de bola ")
         break
