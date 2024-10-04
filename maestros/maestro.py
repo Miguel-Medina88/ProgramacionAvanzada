@@ -1,20 +1,19 @@
+from usuario.usuario import Usuario
 from datetime import datetime
+from usuario.utils.roles import Rol
 
-class Maestro:
-    numero_controlp : str
-    nombre : str
-    apellido : str
-    rfc : str
-    sueldo : float
-    fecha_nacimiento: datetime
+class Maestro(Usuario):
+    rfc: str
+    sueldo: float
+    fecha_nacimiento_maestro: datetime
 
-    def __init__(self, numero_controlp: str, nombre: str, apellido: str, sueldo: float, rfc: str, fecha_nacimiento: datetime):
-        self.nombre = nombre
-        self.apellido = apellido
+
+    def __init__(self, numero_controlp: str, nombre: str, apellido: str, sueldo: float, rfc: str, fecha_nacimiento_maestro: datetime, contrasenia: str):
+        super().__init__(numero_controlp=numero_controlp, nombre=nombre, apellido=apellido, contrasenia=contrasenia, rol=Rol.MAESTRO)
         self.rfc = rfc
         self.sueldo = sueldo
-        self.numero_controlp = numero_controlp
-        self.fecha_nacimiento = fecha_nacimiento
+        self.fecha_nacimiento_maestro = fecha_nacimiento_maestro
+      
 
     def mostrar_info_maestros(self):
         nombre_completo = f"{self.nombre}{self.apellido}"

@@ -4,7 +4,7 @@ from grupos.grupo import Grupo
 from maestros.maestro import Maestro
 from materias.materia import Materias
 from carrera.carrera import Carrera
-from semestre.semestre import Semestre
+from semestre.semestre import Semestre 
 from datetime import datetime
 from random import randint
 
