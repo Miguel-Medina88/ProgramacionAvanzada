@@ -1,251 +1,258 @@
 from escuela.escuela import Escuela
 from estudiantes.estudiante import Estudiante
 from maestros.maestro import Maestro
-from materias.materia import Materias
-from carrera.carrera import Carrera
+from materias.materia import Materia
 from semestre.semestre import Semestre
+from carrera.carrera import Carrera
 from grupos.grupo import Grupo
 from datetime import datetime
+from usuario.usuario import Usuario
+from usuario.utils.roles import Rol
 
 class Menu:
-    escuela = Escuela()
-    usuario_estudiante: str = "Manuel123"
-    contrasenia_estudiante: str = "123456*"
-    usuario_maestro: str = "Alberto123"
-    contrasenia_maestro: str = "654321*"
-    usuario_coordinador: str = "ADMIN"
-    contrasenia_coordinador: str = "ADMIN*"
+    escuela: Escuela = Escuela()
 
     def login(self):
         intentos = 0
         while intentos < 5:
-            print("*** BIENVENIDO ***")
-            print("Inicia Sesión para continuar")
-            nombre_usuario = input("Ingresa tu nombre de usuario: ")
+            print("\n*** BIENVENIDO ***")
+            print("Inicia Sesión para Continuar")
+
+            numero_control = input("Ingresa tu número de control: ")
             contrasenia_usuario = input("Ingresa tu contraseña: ")
 
-            if nombre_usuario==self.usuario_estudiante:
-                if contrasenia_usuario==self.contrasenia_estudiante:
-                    self.mostrar_menu_estudiante()
-                    intentos = 0
-                else:
-                    intentos = self.mostrar_intento_sesion_fallido(intentos_usuarios=intentos)
+            usuario = self.escuela.validar_inicio_sesion(numero_control=numero_control, contrasenia=contrasenia_usuario)
             
-            elif nombre_usuario==self.usuario_maestro:
-                if contrasenia_usuario==self.contrasenia_maestro:
-                    self.mostrar_menu_maestro()
-                    intentos = 0
-                else:
-                    intentos = self.mostrar_intento_sesion_fallido(intentos_usuarios=intentos)
-            
-            elif nombre_usuario==self.usuario_coordinador:
-                if contrasenia_usuario==self.contrasenia_coordinador:
-                    self.mostrar_menu_coordinador()
-                    intentos = 0
-                else:
-                    intentos = self.mostrar_intento_sesion_fallido(intentos_usuarios=intentos)
+            if usuario is None:
+                intentos = self.mostrar_intento_sesion_fallido(intentos_usuario=intentos)
             else:
-                intentos = self.mostrar_intento_sesion_fallido(intentos_usuarios=intentos)
+                if usuario.rol == Rol.ESTUDIANTE:
+                    print("Eres un estudiante")
+                    self.mostrar_menu_estudiante(estudiante=usuario)
+                    intentos = 0
+                elif usuario.rol == Rol.MAESTRO:
+                    print("Eres un profesor")
+                    self.mostrar_menu_Maestro(usuario)
+                    intentos = 0
+                else:
+                    print("Eres un coordinador")
+                    self.mostrar_menu()
+                    intentos = 0
 
-        print("Máximos intentos de inicio de sesion alcanzados. Intente mas tarde")
 
-    def mostrar_intento_sesion_fallido(self, intentos_usuarios):
-        print("\nUsuario o contraseña incorrectos. Intente de nuevo")
-        return intentos_usuarios + 1
+        print("Máximos intentos de inicio de sesión alcanzados. Adiós")
 
-    def mostrar_menu_estudiante(self):
+
+    def mostrar_intento_sesion_fallido(self, intentos_usuario):
+        print("\nUsuario o contraseña incorrectos. Intenta de nuevo")
+        return intentos_usuario + 1
+
+
+    def mostrar_menu_estudiante(self, estudiante: Estudiante):
         opcion = 0
-        while opcion != 5:
-            print("\n*** MINDBOX ***")
+        while opcion != 3:
+            print("\n** MINDBOX **")
+            print("1. Ver horario: ")
+            print("2. Ver grupos: ")
+            print("3. Ver mi informacion: ")
+            print("4. Salir")
+
+            opcion = int(input("Ingresa una opcion: "))
+
+            if opcion == 2:
+                self.escuela.ver_grupos_asignados_a_estudiante(
+                    numero_control_estudiante=estudiante.numero_control
+                )
+            
+
+            if opcion == 3:
+                print(Usuario.mostrar_info_estudiante())
+
+            opcion = int(input("Ingresa una opción"))
+
+            if opcion == 4:
+                break
+
+    def mostrar_menu_Maestro(self, usuario):
+        print("\n\t *** Menu de maestro ***")
+        opcion = 0
+        while opcion != 4:
+            print("\n\t *** Menu de maestro ***")
             print("1. Ver horario")
-            print("2. Ver grupos")
-            print("3. Ver materias")
-            print("4. Ver semestres")
-            print("5. Salir")
-            opcion = int(input("Ingresa una opción: "))
+            print("2. Mostrar materias")
+            print("3. Ver mi informacion")
+            print("4. Salir")
             
-            if opcion == 1:
-                print("\nSeleccionaste mostrar un horario \n")
-
-            elif opcion == 2:
-                self.escuela.listar_grupos()
-
-            elif opcion == 3:
-                self.escuela.listar_materias()
-
+            opcion = int(input("Ingresa una opcion"))
+            if opcion == 3:
+                print(usuario.mostrar_info_maestro())
+        
             elif opcion == 4:
-                self.escuela.listar_semestres()
-            
-            else:
-                print("\nHasta luego")
-                break            
+                break   
 
-    def mostrar_menu_maestro(self):
-        opcion = 0
-        while opcion != 7:
-            print("\n*** MINDBOX ***")
-            print("1. Ver horarios")
-            print("2. Ver grupos")
-            print("3. Ver materias")
-            print("4. Ver alumnos")
-            print("5. Ver carreras")
-            print("6. Ver semestres")
-            print("7. Salir")
-            opcion = int(input("Ingresa una opción: "))
-            
-            if opcion == 1:
-                print("\nSeleccionaste mostrar un horario \n")
 
-            elif opcion == 2:
-                self.escuela.listar_grupos()
-
-            elif opcion == 3:
-                self.escuela.listar_materias()
-
-            elif opcion == 4:
-                self.escuela.listar_estudiantes()
-
-            elif opcion == 5:
-                self.escuela.listar_carreras()
-            
-            elif opcion == 6:
-                self.escuela.listar_semestres()
-            
-            else:
-                print("\nHasta luego")
-                break            
-
-    def mostrar_menu_coordinador(self):
+    def mostrar_menu(self):
         while True:
-            print("*** MINDBOX ***")
+            print("\n** MINDBOX **")
             print("1. Registrar estudiante")
             print("2. Registrar maestro")
             print("3. Registrar materia")
             print("4. Registrar grupo")
             print("5. Registrar horario")
-            print("6. Registrar carrera")
-            print("7. Registrar semestre")
-            print("8. Mostrar estudiantes")
-            print("9. Mostrar maestros")
-            print("10. Mostrar materias")
-            print("11. Mostrar grupos")
-            print("12. Mostrar horarios")
-            print("13. Mostrar carreras")
-            print("14. Mostrar semestres")
-            print("15. Eliminar estudiante")
-            print("16. Eliminar maestro")
-            print("17. Eliminar materia")
-            print("18. Salir")
-            opcion = input("Ingrese una opcion para continuar: ")
-            
+            print("6. Mostrar estudiantes")
+            print("7. Mostrar maestros") # Tarea
+            print("8. Mostrar materias") # Tarea
+            print("9. Mostrar grupos")
+            print("10. Eliminar estudiante")
+            print("11. Eliminar maestro") # Tarea
+            print("12. Eliminar materia") # Tarea
+            print("13. Registrar carrera")
+            print("14. Registrar carrera")
+            print("15. Mostrar carreras")
+            print("16. Registrar estudiante en grupo")
+            print("17. Salir")
+
+            opcion = input("Ingresa una opción para continuar: ")
+
             if opcion == "1":
-                print("\nSeleccionaste agregar un estudiante \n")
+                print("\nSeleccionaste la opción para registrar un estudiante")
+
+                numero_control = self.escuela.generar_numero_control()
                 nombre = input("Ingresa el nombre del estudiante: ")
                 apellido = input("Ingresa el apellido del estudiante: ")
                 curp = input("Ingresa la curp del estudiante: ")
                 ano = int(input("Ingresa el año de nacimiento del estudiante: "))
                 mes = int(input("Ingresa el mes de nacimiento del estudiante: "))
-                dia = int(input("Ingresa el dia de nacimiento del estudiante: "))
+                dia = int(input("Ingresa el día de nacimiento del estudiante: "))
                 fecha_nacimiento = datetime(ano, mes, dia)
+
                 contrasenia = input("Ingresa la contraseña del estudiante: ")
 
-                estudiante = Estudiante("", nombre=nombre, apellido=apellido, curp=curp, fecha_nacimiento=fecha_nacimiento, contrasenia=contrasenia)
-                numero_control = self.escuela.generar_numero_control()
-                estudiante.numero_control = numero_control
-                print("numero de control es: ", numero_control)
-                self.escuela.registrar_estudiante(estudiante=estudiante)        
+                estudiante = Estudiante(
+                    numero_control=numero_control,
+                    nombre=nombre, apellido=apellido,
+                    curp=curp,
+                    fecha_nacimiento=fecha_nacimiento,
+                    contrasenia=contrasenia
+                )
+                self.escuela.registrar_estudiante(estudiante)
+
+                print("\nEstudiante registrado correctamente")
 
             elif opcion == "2":
-                print("\nSeleccionaste agregar un maestro \n")
-                nombre = input("Ingresa el nombre del maestro: ")
-                apellido = input("Ingresa el apellido del maestro: ")
-                ano = int(input("Ingresa el año de nacimiento del maestro: "))
-                mes = int(input("Ingresa el mes de nacimiento del maestro: "))
-                dia = int(input("Ingresa el dia de nacimiento del maestro: "))
-                fecha_nacimiento = datetime(ano, mes, dia)
-                rfc = input("Ingresa el rfc del maestro: ")
-                sueldo = input("Ingresa el sueldo del maestro: ")
+                print("\nSeleccionaste la opción para registrar un maestro")
+
+                nombre_maestro = input("Ingresa el nombre del maestro: ")
+                apellido_maestro = input("Ingresa el apellido del maestro: ")
+                rfc_maestro = input("Ingresa el RFC del maestro: ")
+                sueldo_maestro = float(input("Ingresa el sueldo del maestro: "))
+                ano_nacimiento = int(input("Ingresa el año de nacimiento del maestro: "))
+
+                numero_control_maestro = self.escuela.generar_numero_control_maestro(nombre_maestro, rfc_maestro, ano_nacimiento)
+
                 contrasenia = input("Ingresa la contraseña del maestro: ")
-                
-                maestro = Maestro(nombre=nombre, apellido=apellido, fecha_nacimiento=fecha_nacimiento, rfc=rfc, sueldo=sueldo, contrasenia=contrasenia)      
-                numero_control_maestro = self.escuela.generar_numero_control_maestros(maestro)
-                maestro.numero_control_maestro = numero_control_maestro
-                print("El numero de control del maestro es: ", numero_control_maestro)
-                self.escuela.registrar_maestro(maestro=maestro)
+
+                nuevo_maestro = Maestro(
+                    numeroControl=numero_control_maestro,
+                    nombre=nombre_maestro,
+                    apellido=apellido_maestro,
+                    rfc=rfc_maestro,
+                    sueldo=sueldo_maestro,
+                    contrasenia=contrasenia
+                )
+                nuevo_maestro.numeroControl = numero_control_maestro
+
+                self.escuela.registrar_maestro(nuevo_maestro)
+
+                print(f"\nMaestro registrado con éxito. Número de control: {nuevo_maestro.numeroControl}")
 
             elif opcion == "3":
-                print("\nSeleccionaste agregar una materia \n")
-                nombre = input("Ingresa el nombre de la materia: ")
-                descripcion = input("Ingresa la descripcion de la materia: ")
-                semestre = input("Ingresa el id del semestre al que corresponde la materia: ")
-                credito = int(input("Ingresa los creditos que otorga la materia: "))
+                print("\nSeleccionaste la opción para registrar una nueva materia")
+
+                nombre_materia = input("Ingresa el nombre de la materia: ")
+                descripcion_materia = input("Ingresa la descripción de la materia: ")
+                semestre_materia = int(input("Ingresa el semestre de la materia: "))
+                creditos_materia = int(input("Ingresa los créditos de la materia: "))
+                id_maestro = input("Ingresa el nu ero de control del maestro asignado a esta materia: ")
+
                 
-                materia = Materia(nombre=nombre, descripcion=descripcion, id_semestre=semestre, creditos=credito)      
-                print("El id de la materia es: ", materia.numero_control)
-                self.escuela.registrar_materia(materia=materia)
+                maestro = self.escuela.buscar_maestro_por_numero_control(numero_control_maestro=id_maestro)
+
+                if maestro is None:
+                    print("No existe un maestro con ese numero de control ")
+                    return
+
+
+                nueva_materia = Materia(nombre=nombre_materia, descripcion=descripcion_materia, semestre=semestre_materia, creditos=creditos_materia, maestro=maestro)
+                self.escuela.registrar_materia(nueva_materia)
+
+                print(f"\nMateria registrada con éxito. Número de control: {nueva_materia.numero_control}")
 
             elif opcion == "4":
-                print("\nSeleccionaste agregar un grupo \n")
-                tipo = input("Ingresa el tipo de grupo (A/B): ")
-                id_semestre = input("Ingresa el ID del semestre al que pertenece el grupo: ")
+                print("\nSeleccionaste la opción para registrar un nuevo grupo")
+                
+                tipo = input("Ingresa el tipo de grupo (A/B)")
+                id_semestre = input("Ingresa el ID del semestre al que pertenece el grupo")
+
                 grupo = Grupo(tipo=tipo, id_semestre=id_semestre)
+
                 self.escuela.registrar_grupo(grupo=grupo)
 
             elif opcion == "5":
-                print("\nSeleccionaste agregar un horario \n")
-            
+                print("hola")
+                for semestre in self.escuela.lista_carreras:
+
+                    print(semestre.matricula)
+
             elif opcion == "6":
-                print("\nSeleccionaste registrar una carrera")
-                nombre  = input("Ingresa el nombre de la carrera: ")
-                carrera = Carrera(nombre=nombre)
-                self.escuela.registrar_carrera(carrera=carrera)
+                self.escuela.listar_estudiantes()
 
             elif opcion == "7":
-                print("\nSeleccionaste registrar un semestre")
-                numero = input("Ingresa el numero del semestre: ")
-                id_carrera = input("Ingresa el ID de la carrera: ")
-                semestre = Semestre(numero=numero, id_carrera=id_carrera)
-                self.escuela.registrar_semestre(semestre=semestre) 
+                self.escuela.listar_maestros()
 
             elif opcion == "8":
-                self.escuela.listar_estudiantes()
-            
-            elif opcion == "9":
-                self.escuela.listar_maestros()
-            
-            elif opcion == "10":
                 self.escuela.listar_materias()
-            
-            elif opcion == "11":
-                self.escuela.listar_grupos()
-            
-            elif opcion == "12":
-                print("\nSeleccionaste mostrar un horario \n")
-            
+
+            elif opcion == "10":
+                print("\nSeleccionaste la opción para eliminar un estudiantes")
+
+                numero_control = input("Ingresa el número de control del estudiante")
+
+                self.escuela.eliminar_estudiante(numero_control=numero_control)
+
             elif opcion == "13":
-                print("\nSeleccionaste mostrar carreras \n")
-                self.escuela.listar_carreras()
-            
+                print("\nSeleccionaste la opción para registrar una carrera")
+
+                nombre = input("Ingresa el nombre de la carrera")
+
+                carrera = Carrera(nombre=nombre)
+
+                self.escuela.registrar_carrera(carrera=carrera)
+
             elif opcion == "14":
-                print("\nSeleccionaste mostrar semestres \n")
-                self.escuela.listar_semestres()
+                print("\nSeleccionaste la opción para registrar un semestre")
+
+                numero = input("Ingresa el numero del semestre")
+                id_carrera = input("Ingresa el ID de la carrera")
+
+                semestre = Semestre(numero=numero, id_carrera=id_carrera)
+
+                self.escuela.registrar_semestre(semestre=semestre)
 
             elif opcion == "15":
-                print("\nSeleccionaste la opcion de eliminar estudiante")
-                numero_control = input("\nIngresa el numero de control del estudiante: ")
-                self.escuela.eliminar_estudiante(numero_control=numero_control)
+                self.escuela.listar_carreras()
             
             elif opcion == "16":
-                print("\nSeleccionaste la opcion de eliminar maestro")
-                numero_control = input("\nIngresa el numero de control del maestro: ")
-                self.escuela.eliminar_maestro(numero_control=numero_control)
-            
-            elif opcion == "17":
-                print("\nSeleccionaste la opcion de eliminar materia")
-                id_de_la_materia = input("\nIngresa el ID de la materia: ")
-                self.escuela.eliminar_materia(id_de_la_materia=id_de_la_materia)
+                numero_control_estudiante = input("Ingrese el numero de control del estudiante ")
+                id_grupo = input("Ingrese el id del grupo al cual entrara el estudiante")
 
-            else:
+                self.escuela.registrar_alumno_en_grupo(
+                    numero_control_estudiante=numero_control_estudiante,
+                    id_grupo=id_grupo
+                )
+
+            elif opcion == "17":
                 print("\nHasta luego")
                 break
+
 

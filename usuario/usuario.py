@@ -13,5 +13,5 @@ class Usuario:
         self.apellido = apellido
         self.contrasenia = contrasenia
         self.rol = rol
-
+    
     

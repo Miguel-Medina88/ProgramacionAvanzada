@@ -1,5 +1,6 @@
 from typing import List
-from materias.materia import Materias
+from materias.materia import Materia
+from estudiantes.estudiante import Estudiante
 from estudiantes.estudiante import Estudiante
 from semestre.semestre import Semestre
 from random import randint
@@ -7,21 +8,24 @@ from random import randint
 class Carrera:
     matricula: str
     nombre: str
-    materias: List[Materias]
-    numero_semestre: int = 0
+    numero_semestres: int = 0
     semestres: List[Semestre] = []
 
     def __init__(self, nombre: str):
         self.matricula = self.generar_id(nombre)
         self.nombre = nombre
 
-    def generar_id(self, nombre: chr) -> str:
-        return f"{nombre}-{randint(1,100000)}-{randint(0,1000000)}"
-    
-    def registrar_semestre(self, semestre: Semestre): #Agregar semestre
-        self.numero_semestre += 1
+    def generar_id(self, nombre: str) -> str:
+        return f"{nombre}-{randint(0, 100000)}-{randint(0, 100000)}"
+
+    def registrar_semestre(self, semestre: Semestre):
+        self.numero_semestres += 1
         self.semestres.append(semestre)
 
-    def mostrar_info_carrera(self):
-        infoM = f"nombre: {self.nombre}, matricula: {self.matricula}, numero_semestre: {self.numero_semestre}"
-        return infoM
+        
+
+    
+    # " CARRERAS "
+    # matricula :
+    # nombre :
+    # numero_semestres :
